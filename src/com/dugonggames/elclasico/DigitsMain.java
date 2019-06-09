@@ -18,7 +18,7 @@ public class DigitsMain {
         for (int i = 0; i < 60000; i++) traininglabels[i] = traininglabelsbytes[i+8];
 
         DistanceClassifier c = new DistanceClassifier(trainingimages, traininglabels);
-
+        Tree t = new Tree(trainingimages, traininglabels);
 
         DigitImage[] testimages = new DigitImage[60000];
         for (int i = 0; i < 10000; i++) testimages[i] = new DigitImage(testimagesbytes, 16+(784*i));
@@ -28,13 +28,13 @@ public class DigitsMain {
 
         int correct = 0;
         for (int i = 0; i < 10000; i++){
-            if (testlabels[i] == c.tClassify(testimages[i])) correct++;
+           if (testlabels[i] == t.classify(testimages[i])) correct++;
         }
         System.out.println(correct);
 
         int num = 543;
         testimages[num].print();
-        System.out.println(c.tClassify(testimages[num]));
+        System.out.println(t.classify(testimages[num]));
         System.out.println(testlabels[num]);
     }
 }

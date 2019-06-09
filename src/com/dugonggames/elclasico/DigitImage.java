@@ -54,4 +54,6 @@ public class DigitImage {
         for (int i = 0; i < 784; i++) result[i] = digit[i]/denom;
         return new DigitImage(result);
     }
+
+    public float[] getDigit(){return digit;}
 }
