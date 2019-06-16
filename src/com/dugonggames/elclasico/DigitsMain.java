@@ -12,29 +12,22 @@ public class DigitsMain {
         byte[] testlabelsbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\t10k-labels-idx1-ubyte\\t10k-labels.idx1-ubyte"));
 
         DigitImage[] trainingimages = new DigitImage[60000];
-        for (int i = 0; i < 60000; i++) trainingimages[i] = new DigitImage(trainingimagesbytes, 16+(784*i));
+        for (int i = 0; i < 60000; i++) trainingimages[i] = new DigitImage(trainingimagesbytes, 16+(784*i), traininglabelsbytes, 8+i);
 
-        int[] traininglabels = new int[60000];
-        for (int i = 0; i < 60000; i++) traininglabels[i] = traininglabelsbytes[i+8];
-
-        DistanceClassifier c = new DistanceClassifier(trainingimages, traininglabels);
-        Tree t = new Tree(trainingimages, traininglabels);
+        Tree t = new Tree(trainingimages);
 
         DigitImage[] testimages = new DigitImage[60000];
-        for (int i = 0; i < 10000; i++) testimages[i] = new DigitImage(testimagesbytes, 16+(784*i));
-
-        int[] testlabels = new int[60000];
-        for (int i = 0; i < 10000; i++) testlabels[i] = testlabelsbytes[i+8];
+        for (int i = 0; i < 10000; i++) testimages[i] = new DigitImage(testimagesbytes, 16+(784*i), testlabelsbytes, 8+i);
 
         int correct = 0;
         for (int i = 0; i < 10000; i++){
-           if (testlabels[i] == t.classify(testimages[i])) correct++;
+           if (testimages[i].getLabel() == t.classify(testimages[i])) correct++;
         }
         System.out.println(correct);
 
         int num = 543;
         testimages[num].print();
         System.out.println(t.classify(testimages[num]));
-        System.out.println(testlabels[num]);
+        System.out.println(testimages[num].getLabel());
     }
 }

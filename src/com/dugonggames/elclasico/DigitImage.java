@@ -2,11 +2,13 @@ package com.dugonggames.elclasico;
 
 public class DigitImage {
     float[] digit = new float[784];
+    int label;
 
-    public DigitImage(byte[] bytearr, int offset){
+    public DigitImage(byte[] bytearr, int offset, byte[] labels, int loffset){
         for (int i = 0; i < 784; i++){
             float f = bytearr[i+offset]/256f;
             digit[i] = f<0 ? f+1 : f;
+            label = (int) labels[loffset];
         }
     }
 
@@ -62,4 +64,5 @@ public class DigitImage {
     }
 
     public float[] getDigit(){return digit;}
+    public int getLabel(){return label;}
 }
