@@ -11,7 +11,24 @@ public class Tree {
         int bestIndex = -1;
         float bestThreshold = -1f;
         for (int i = 0; i < 784; i++){
-            for (float j = 0; j < 1; j += 1.0/255){
+            ImageSorter.sort(images, i);
+            ClassCounts left = new ClassCounts(10);
+            ClassCounts right = new ClassCounts(10);
+            for (int j = 0; j < images.length; j++){ right.increment(labels[j]); }
+            for (int j = 0; j < images.length; j++){
+                if (j > 0){
+                    right.decrement(labels[j-1]);
+                    left.increment(labels[j-1]);
+                }
+                if (left.gimiPurity() + right.gimiPurity() > bestPurity){
+                    bestPurity = left.gimiPurity() + right.gimiPurity();
+                    bestIndex = i;
+                    bestThreshold = images[j].getDigit()[i];
+                    leftBest = left.highestValue();
+                    rightBest = right.highestValue();
+                }
+            }
+            /*for (float j = 0; j < 1; j += 1.0/255){
                 ClassCounts left = new ClassCounts(10);
                 ClassCounts right = new ClassCounts(10);
                 for (int k = 0; k < images.length; k++){
@@ -25,7 +42,7 @@ public class Tree {
                     leftBest = left.highestValue();
                     rightBest = right.highestValue();
                 }
-            }
+            }*/
             System.out.println(i);
         }
         splitIndex = bestIndex;

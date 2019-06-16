@@ -55,5 +55,11 @@ public class DigitImage {
         return new DigitImage(result);
     }
 
+    public int compareTo(DigitImage other, int pixel){
+        if (other.digit[pixel] > digit[pixel]) return -1;
+        else if (other.digit[pixel] < digit[pixel]) return 1;
+        else return 0;
+    }
+
     public float[] getDigit(){return digit;}
 }
