@@ -8,6 +8,11 @@ public class ClassCounts {
         counts = new int[size];
     }
 
+    public ClassCounts(ClassCounts cc){
+        counts = cc.counts.clone();
+        sum = cc.sum;
+    }
+
     public float propMatching(int i){
         return (counts[i]+0f)/sum;
     }

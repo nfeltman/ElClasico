@@ -25,6 +25,10 @@ public class DigitImage {
         }
     }
 
+    public int numFeatures(){
+        return 784;
+    }
+
     public DigitImage add(DigitImage other){
         float[] result = new float[784];
         for (int i = 0; i < 784; i++) result[i] = digit[i] + other.digit[i];
