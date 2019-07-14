@@ -2,6 +2,13 @@ package com.dugonggames.elclasico
 
 import java.lang.Integer.min
 
+fun half(i: Int): Int {
+    return if (i % 2 == 0)
+        i / 2
+    else
+        i / 2 + 1
+}
+
 data class DownsampleResults(
     val outputWidth: Int,
     val outputHeight: Int,
@@ -9,8 +16,8 @@ data class DownsampleResults(
 )
 
 fun downsample(source: IntArray, sourceOffset: Int, w: Int, h: Int, target: IntArray, targetOffset: Int) : DownsampleResults {
-    val outputW = ImageManipulation.half(w)
-    val outputH = ImageManipulation.half(h)
+    val outputW = half(w)
+    val outputH = half(h)
     for (i in 0 until outputW) {
         for (j in 0 until outputH) {
             val r2 = min(((j*2) + 1), h-1)

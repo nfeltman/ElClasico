@@ -7,10 +7,9 @@ class DigitImage constructor(
 
     companion object {
         fun fromFile(bytearr: ByteArray, offset: Int, labels: ByteArray, loffset: Int): DigitImage {
-            val pixels = FloatArray(784)
-            for (i in 0..783) {
+            val pixels = FloatArray(784) {i ->
                 val f = bytearr[i + offset] / 256f
-                pixels[i] = if (f < 0) f + 1 else f
+                if (f < 0) f + 1 else f
             }
 
             return DigitImage(pixels, labels[loffset].toInt())
@@ -34,15 +33,11 @@ class DigitImage constructor(
     }
 
     fun add(other: DigitImage): DigitImage {
-        val result = FloatArray(784)
-        for (i in 0..783) result[i] = digit[i] + other.digit[i]
-        return DigitImage(result)
+        return DigitImage(FloatArray(784) { i->  digit[i] + other.digit[i] })
     }
 
     fun subtract(other: DigitImage): DigitImage {
-        val result = FloatArray(784)
-        for (i in 0..783) result[i] = digit[i] - other.digit[i]
-        return DigitImage(result)
+        return DigitImage(FloatArray(784){ i -> digit[i] - other.digit[i] })
     }
 
     // Euclidian distance
