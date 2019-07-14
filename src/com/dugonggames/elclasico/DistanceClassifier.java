@@ -5,7 +5,7 @@ public class DistanceClassifier {
 
     public DistanceClassifier(DigitImage[] images, int[] labels){
         avgs = new DigitImage[10];
-        for (int i = 0; i < 10; i++) avgs[i] = new DigitImage(new float[784]);
+        for (int i = 0; i < 10; i++) avgs[i] = new DigitImage(new float[784], 0);
         int[] counts = new int[10];
 
         for (int i = 0; i < 10000; i++){
