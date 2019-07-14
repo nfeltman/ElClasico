@@ -16,7 +16,7 @@ public class ImageManipulation {
         return null;
     }
 
-    public static int over2(int i){
+    public static int half(int i){
         if (i%2==0) return i/2;
         else return (i/2)+1;
     }
