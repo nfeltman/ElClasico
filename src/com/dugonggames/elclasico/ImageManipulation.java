@@ -1,7 +1,7 @@
 package com.dugonggames.elclasico;
 
 public class ImageManipulation {
-    public int[] shrinkBy2(int[] image, int width, int height){
+    public static int[] shrinkBy2(int[] image, int width, int height){
         int[] result = new int[image.length];
         for (int i = 0; i < width/2; i++){
             for (int j = 0; j < height/2; j++){
@@ -12,7 +12,12 @@ public class ImageManipulation {
         return result;
     }
 
-    public DigitImage blur(){
+    public static DigitImage blur(){
+        return null;
+    }
 
+    public static int over2(int i){
+        if (i%2==0) return i/2;
+        else return (i/2)+1;
     }
 }
