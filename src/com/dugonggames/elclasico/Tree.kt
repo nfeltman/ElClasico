@@ -51,26 +51,9 @@ class Tree private constructor(val tree: Node<Int>) {
                 }
                 if (i % 100 == 0 && i > 0) println(i)
             }
-            val pi = partition(images, bestIndex, bestThreshold, low, high)
+            val pi = images.partition(low, high) { i -> i.digit[bestIndex] < bestThreshold}
             println("pi: $pi")
             return Branch(buildNode(images, maxDepth - 1, low, pi), buildNode(images, maxDepth - 1, pi, high), bestIndex, bestThreshold)
-        }
-
-        private fun partition(images: Array<DigitImage>, pixel: Int, threshold: Float, low: Int, high: Int): Int {
-            println(pixel.toString() + ":" + threshold)
-            var i = low
-            for (j in low until high) {
-                if (images[j].digit[pixel] < threshold) {
-                    val temp = images[i]
-                    images[i] = images[j]
-                    images[j] = temp
-                    i++
-                }
-            }
-            val temp = images[i + 1]
-            images[i] = images[high - 1]
-            images[high - 1] = temp
-            return i
         }
     }
 }
