@@ -7,7 +7,7 @@ object DigitsMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val trainingimagesbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\train-images-idx3-ubyte\\train-images.idx3-ubyte"))
+        /*val trainingimagesbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\train-images-idx3-ubyte\\train-images.idx3-ubyte"))
         val traininglabelsbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\train-labels-idx1-ubyte\\train-labels.idx1-ubyte"))
         val testimagesbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\t10k-images-idx3-ubyte\\t10k-images.idx3-ubyte"))
         val testlabelsbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\t10k-labels-idx1-ubyte\\t10k-labels.idx1-ubyte"))
@@ -31,6 +31,7 @@ object DigitsMain {
         val num = 543
         testimages[num].print()
         println(t.classify(testimages[num]))
-        println(testimages[num].label)
+        println(testimages[num].label)*/
+        testPyramid()
     }
 }
