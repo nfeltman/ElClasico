@@ -1,4 +1,6 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.Classifiers
+
+import com.dugonggames.elclasico.DigitImage
 
 class DistanceClassifier(images: Array<DigitImage>, labels: IntArray) {
     internal var avgs: Array<DigitImage>

@@ -1,4 +1,4 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.ImageManipulation
 
 import java.lang.Integer.min
 
@@ -31,7 +31,7 @@ fun downsample(source: IntArray, sourceOffset: Int, w: Int, h: Int, target: IntA
             println()
         }
     }
-    return DownsampleResults(outputW, outputH, targetOffset+(outputW*outputH))
+    return DownsampleResults(outputW, outputH, targetOffset + (outputW * outputH))
 }
 
 fun testDownsample(){

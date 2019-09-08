@@ -1,4 +1,6 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.Classifiers
+
+import com.dugonggames.elclasico.DigitImage
 
 interface Node<T> {
     fun predict(im: DigitImage): T

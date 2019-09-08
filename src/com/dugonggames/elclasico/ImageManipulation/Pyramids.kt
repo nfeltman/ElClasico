@@ -1,4 +1,4 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.ImageManipulation
 
 data class PyramidLevel(
         val start: Int,

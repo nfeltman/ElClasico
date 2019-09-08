@@ -1,5 +1,6 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.Classifiers
 
+import com.dugonggames.elclasico.*
 import java.util.Arrays
 import java.util.Comparator
 
@@ -12,7 +13,7 @@ class Tree private constructor(val tree: Node<Int>) {
     companion object {
 
         fun buildTree(images: Array<DigitImage>): Tree =
-            Tree(buildNode(images, 3, 0, images.size))
+                Tree(buildNode(images, 3, 0, images.size))
 
 
         fun buildNode(images: Array<DigitImage>, maxDepth: Int, low: Int, high: Int): Node<Int> {

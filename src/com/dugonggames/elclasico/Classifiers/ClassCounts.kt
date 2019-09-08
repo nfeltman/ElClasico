@@ -1,4 +1,4 @@
-package com.dugonggames.elclasico
+package com.dugonggames.elclasico.Classifiers
 
 class ClassCounts(
         val counts: IntArray,
@@ -7,7 +7,7 @@ class ClassCounts(
 
     constructor(numClasses: Int) : this(IntArray(numClasses), 0)
 
-    fun clone() : ClassCounts = ClassCounts( counts.clone(), sum )
+    fun clone() : ClassCounts = ClassCounts(counts.clone(), sum)
 
     fun propMatching(i: Int): Float {
         return (counts[i] + 0f) / sum
