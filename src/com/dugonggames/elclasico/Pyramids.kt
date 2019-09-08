@@ -28,7 +28,6 @@ fun createGaussianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
         tempH = half(tempH);
     }
     totalSize++ //To account for the final addition of 1*1
-    println(totalSize)
     val out = IntArray(totalSize);
     for (i in 0 until source.size) out[i] = source[i]
     var lastlevel = PyramidLevel(0, w, h)
@@ -46,17 +45,47 @@ fun createGaussianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
 }
 
 fun createLaplacianPyramid(gaussianPyramid: Pyramid): Pyramid {
-    TODO()
+    var data = IntArray(gaussianPyramid.data.size)
+    gaussianPyramid.levels.zipWithNext { a, b ->  for (i in 0 until a.width){
+        for (j in 0 until a.height){
+            //println("$i, $j, $a, $b, ${b.start+(i/2*b.height)+j/2}")
+            var levelUp=gaussianPyramid.data[b.start+(i/2*b.height)+j/2]
+            data[a.start+(i*a.height)+j]=(gaussianPyramid.data[a.start+(i*a.height)+j]-levelUp)
+        }
+    }}
+    data[data.size-1] = gaussianPyramid.data[data.size-1]
+    return Pyramid(data, gaussianPyramid.levels)
 }
 
 fun createLaplacianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
     return createLaplacianPyramid(createGaussianPyramid(source, w, h))
 }
 
-fun testPyramid():Boolean{
-    var image = IntArray(31*17,{i -> i})
-    var pyramid = createGaussianPyramid(image, 31, 17)
+fun testGaussianPyramid():Boolean{
+    var image = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    var pyramid = createGaussianPyramid(image, 4, 4)
     println(pyramid.data.joinToString())
     println(pyramid.levels)
     return false
+}
+
+fun testLaplacianPyramid():Boolean {
+    var image = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+    var pyramid = createLaplacianPyramid(image, 4, 4)
+    println(pyramid.data.joinToString())
+    return false;
+
+    //1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
+    //3, 5, 11, 13
+    //8
+
+    /*
+        1, 2, 3, 4,
+        5, 6, 7, 8,
+        9, 10, 11, 12,
+        13, 14, 15, 16
+
+        3, 5,
+        11, 13
+     */
 }

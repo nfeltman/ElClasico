@@ -32,6 +32,6 @@ object DigitsMain {
         testimages[num].print()
         println(t.classify(testimages[num]))
         println(testimages[num].label)*/
-        testPyramid()
+        testLaplacianPyramid()
     }
 }
