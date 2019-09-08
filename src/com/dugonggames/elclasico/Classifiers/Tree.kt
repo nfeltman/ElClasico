@@ -12,11 +12,11 @@ class Tree private constructor(val tree: Node<Int>) {
 
     companion object {
 
-        fun buildTree(images: Array<DigitImage>): Tree =
+        fun buildTree(images: Array<LabeledSample>): Tree =
                 Tree(buildNode(images, 3, 0, images.size))
 
 
-        fun buildNode(images: Array<DigitImage>, maxDepth: Int, low: Int, high: Int): Node<Int> {
+        fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int): Node<Int> {
             val countAll = ClassCounts(10)
             for (j in low until high) {
                 countAll.increment(images[j].label)
@@ -33,8 +33,8 @@ class Tree private constructor(val tree: Node<Int>) {
                 all.increment(images[j].label)
             }
 
-            for (i in 0 until images[low].numFeatures()) {
-                Arrays.sort(images, low, high, Comparator.comparing<DigitImage, Float> { d -> d.digit[i] })
+            for (i in 0 until images[low].numFeatures) {
+                Arrays.sort(images, low, high, Comparator.comparing<LabeledSample, Float> { d -> d.fv[i] })
                 val left = ClassCounts(10)
                 val right = all.clone()
                 for (j in low until high) {
@@ -45,14 +45,14 @@ class Tree private constructor(val tree: Node<Int>) {
                     if (left.gimiPurity() + right.gimiPurity() > bestPurity) {
                         bestPurity = left.gimiPurity() + right.gimiPurity()
                         bestIndex = i
-                        bestThreshold = images[j].digit[i]
+                        bestThreshold = images[j].fv[i]
                         //leftBest = left.highestValue();
                         //rightBest = right.highestValue();
                     }
                 }
                 if (i % 100 == 0 && i > 0) println(i)
             }
-            val pi = images.partition(low, high) { i -> i.digit[bestIndex] < bestThreshold}
+            val pi = images.partition(low, high) { i -> i.fv[bestIndex] < bestThreshold}
             println("pi: $pi")
             return Branch(buildNode(images, maxDepth - 1, low, pi), buildNode(images, maxDepth - 1, pi, high), bestIndex, bestThreshold)
         }

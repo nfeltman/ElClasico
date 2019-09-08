@@ -32,34 +32,6 @@ class DigitImage constructor(
         return 784
     }
 
-    fun add(other: DigitImage): DigitImage {
-        return DigitImage(FloatArray(784) { i->  digit[i] + other.digit[i] })
-    }
-
-    fun subtract(other: DigitImage): DigitImage {
-        return DigitImage(FloatArray(784){ i -> digit[i] - other.digit[i] })
-    }
-
-    // Euclidian distance
-    fun eDistance(other: DigitImage): Double {
-        var sum = 0.0
-        for (i in 0..783) sum += ((digit[i] - other.digit[i]) * (digit[i] - other.digit[i])).toDouble()
-        return Math.sqrt(sum)
-    }
-
-    // Taxicab distance
-    fun tDistance(other: DigitImage): Double {
-        var sum = 0.0
-        for (i in 0..783) sum += Math.abs(digit[i] - other.digit[i]).toDouble()
-        return sum
-    }
-
-    fun divide(denom: Int): DigitImage {
-        val result = FloatArray(784)
-        for (i in 0..783) result[i] = digit[i] / denom
-        return DigitImage(result)
-    }
-
     fun compareTo(other: DigitImage, pixel: Int): Int {
         return if (other.digit[pixel] > digit[pixel])
             -1
