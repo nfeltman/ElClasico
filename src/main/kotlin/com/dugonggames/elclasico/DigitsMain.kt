@@ -3,7 +3,6 @@ package com.dugonggames.elclasico
 import com.dugonggames.elclasico.Classifiers.FeatureVector
 import com.dugonggames.elclasico.Classifiers.LabeledSample
 import com.dugonggames.elclasico.Classifiers.Tree
-import com.dugonggames.elclasico.ImageManipulation.testLaplacianPyramid
 import java.nio.file.Files
 import java.nio.file.Paths
 
