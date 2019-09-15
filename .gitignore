@@ -1,5 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 
-*.iml
+workspace.iml
+usage.
 .idea
 out
+/out/
