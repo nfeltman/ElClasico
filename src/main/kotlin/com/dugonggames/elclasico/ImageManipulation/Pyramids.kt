@@ -60,32 +60,3 @@ fun createLaplacianPyramid(gaussianPyramid: Pyramid): Pyramid {
 fun createLaplacianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
     return createLaplacianPyramid(createGaussianPyramid(source, w, h))
 }
-
-fun testGaussianPyramid():Boolean{
-    var image = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-    var pyramid = createGaussianPyramid(image, 4, 4)
-    println(pyramid.data.joinToString())
-    println(pyramid.levels)
-    return false
-}
-
-fun testLaplacianPyramid():Boolean {
-    var image = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-    var pyramid = createLaplacianPyramid(image, 4, 4)
-    println(pyramid.data.joinToString())
-    return false;
-
-    //1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16
-    //3, 5, 11, 13
-    //8
-
-    /*
-        1, 2, 3, 4,
-        5, 6, 7, 8,
-        9, 10, 11, 12,
-        13, 14, 15, 16
-
-        3, 5,
-        11, 13
-     */
-}
