@@ -3,6 +3,8 @@ package com.dugonggames.elclasico.Classifiers
 import com.dugonggames.elclasico.DigitImage
 import java.util.*
 
+class DifferentLengthsException(s1: Int, s2: Int): RuntimeException("Tried to operate on vectors of differing lengths $s1 and $s2")
+
 data class FeatureVector(val fa:FloatArray){
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -21,35 +23,43 @@ data class FeatureVector(val fa:FloatArray){
 
 
     fun add(other: FeatureVector): FeatureVector {
-        return FeatureVector(FloatArray(784) { i->  fa[i] + other.fa[i] })
+        if (fa.size != other.fa.size) throw DifferentLengthsException(fa.size, other.fa.size)
+        return FeatureVector(FloatArray(fa.size) { i->  fa[i] + other.fa[i] })
     }
 
     fun subtract(other: FeatureVector): FeatureVector {
-        return FeatureVector(FloatArray(784){ i -> fa[i] - other.fa[i] })
+        if (fa.size != other.fa.size) throw DifferentLengthsException(fa.size, other.fa.size)
+        return FeatureVector(FloatArray(fa.size){ i -> fa[i] - other.fa[i] })
     }
 
     fun divide(denom: Int): FeatureVector {
-        val result = FloatArray(784)
-        for (i in 0..783) result[i] = fa[i] / denom
+        val result = FloatArray(fa.size)
+        for (i in 0..fa.size-1) result[i] = fa[i] / denom
         return FeatureVector(result)
     }
 
     // Euclidian distance
     fun eDistance(other: FeatureVector): Double {
+        if (fa.size != other.fa.size) throw DifferentLengthsException(fa.size, other.fa.size)
         var sum = 0.0
-        for (i in 0..783) sum += ((fa[i] - other.fa[i]) * (fa[i] - other.fa[i])).toDouble()
+        for (i in 0..fa.size-1) sum += ((fa[i] - other.fa[i]) * (fa[i] - other.fa[i])).toDouble()
         return Math.sqrt(sum)
     }
 
     // Taxicab distance
     fun tDistance(other: FeatureVector): Double {
+        if (fa.size != other.fa.size) throw DifferentLengthsException(fa.size, other.fa.size)
         var sum = 0.0
-        for (i in 0..783) sum += Math.abs(fa[i] - other.fa[i]).toDouble()
+        for (i in 0..fa.size-1) sum += Math.abs(fa[i] - other.fa[i]).toDouble()
         return sum
     }
 
     operator fun plus(temp: FeatureVector): FeatureVector {
         return this.add(temp)
+    }
+
+    operator fun minus(temp: FeatureVector): FeatureVector {
+        return this.subtract(temp)
     }
 
     operator fun div(i: Int): FeatureVector {

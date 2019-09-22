@@ -15,6 +15,7 @@ data class DownsampleResults(
     val endIndex: Int
 )
 
+//Makes a 1/2 size version of image by averaging each 2*2 square of pixels
 fun downsample(source: IntArray, sourceOffset: Int, w: Int, h: Int, target: IntArray, targetOffset: Int) : DownsampleResults {
     val outputW = half(w)
     val outputH = half(h)

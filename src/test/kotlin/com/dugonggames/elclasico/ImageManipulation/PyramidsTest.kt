@@ -28,6 +28,7 @@ internal class PyramidsTest {
         val image = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
         val pyramid = createLaplacianPyramid(image, 4, 4)
         println(pyramid.data.joinToString())
+        assert(pyramid.data.joinToString().equals("-2, -1, -2, -1, 2, 3, 2, 3, -2, -1, -2, -1, 2, 3, 2, 3, -5, -3, 3, 5, 8"))
 
         // TODO: fill in some asserts here
 
