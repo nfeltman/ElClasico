@@ -12,6 +12,8 @@ class Tree private constructor(val tree: Node<Int>) {
 
     companion object {
 
+        data class Split(val bestPurity: Float, val bestThreshold: Float)
+
         fun buildTree(images: Array<LabeledSample>): Tree =
                 Tree(buildNode(images, 3, 0, images.size))
 
@@ -34,27 +36,38 @@ class Tree private constructor(val tree: Node<Int>) {
             }
 
             for (i in 0 until images[low].numFeatures) {
-                Arrays.sort(images, low, high, Comparator.comparing<LabeledSample, Float> { d -> d.fv[i] })
-                val left = ClassCounts(10)
-                val right = all.clone()
-                for (j in low until high) {
-                    if (j > low) {
-                        right.decrement(images[j - 1].label)
-                        left.increment(images[j - 1].label)
-                    }
-                    if (left.gimiPurity() + right.gimiPurity() > bestPurity) {
-                        bestPurity = left.gimiPurity() + right.gimiPurity()
-                        bestIndex = i
-                        bestThreshold = images[j].fv[i]
-                        //leftBest = left.highestValue();
-                        //rightBest = right.highestValue();
-                    }
+                val best = chooseBestSplit(images, low, high, all, i)
+                if (best.bestPurity > bestPurity){
+                    bestPurity = best.bestPurity
+                    bestIndex = i
+                    bestThreshold = best.bestThreshold
                 }
                 if (i % 100 == 0 && i > 0) println(i)
             }
             val pi = images.partition(low, high) { i -> i.fv[bestIndex] < bestThreshold}
             println("pi: $pi")
             return Branch(buildNode(images, maxDepth - 1, low, pi), buildNode(images, maxDepth - 1, pi, high), bestIndex, bestThreshold)
+        }
+
+        fun chooseBestSplit(images: Array<LabeledSample>, low: Int, high: Int, all: ClassCounts, i: Int):Split{
+            Arrays.sort(images, low, high, Comparator.comparing<LabeledSample, Float> { d -> d.fv[i] })
+            val left = ClassCounts(all.counts.size)
+            val right = all.clone()
+            var bestPurity = 0f
+            var bestThreshold = 0f
+            for (j in low+1 until high) {
+                if (j > low) {
+                    right.decrement(images[j-1].label)
+                    left.increment(images[j-1].label)
+                }
+                if (left.gimiPurity() + right.gimiPurity() > bestPurity) {
+                    bestPurity = left.gimiPurity() + right.gimiPurity()
+                    bestThreshold = (images[j].fv[i] + (images[j-1].fv[i]))/2
+                    //leftBest = left.highestValue();
+                    //rightBest = right.highestValue();
+                }
+            }
+            return Split(bestPurity, bestThreshold)
         }
     }
 }

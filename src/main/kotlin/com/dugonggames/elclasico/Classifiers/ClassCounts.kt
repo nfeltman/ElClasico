@@ -62,4 +62,8 @@ class ClassCounts(
         counts[i] -= amount
         sum -= amount
     }
+
+    override fun toString():String{
+        return counts.joinToString {i->"$i"}
+    }
 }
