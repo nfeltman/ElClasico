@@ -19,12 +19,11 @@ class Tree private constructor(val tree: Node<Int>) {
 
 
         fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int): Node<Int> {
-            val countAll = ClassCounts(numClasses)
-            for (j in low until high) {
-                countAll.increment(images[j].label)
-            }
-
+            val countAll = countRange(images, low,  high, numClasses)
             if (maxDepth <= 1) return Leaf(countAll.highestValue())
+            val index = countAll.allSame()
+            if (index != null) return Leaf(index)
+
             var bestPurity = 0f
             var bestIndex = -1
             var bestThreshold = -1f

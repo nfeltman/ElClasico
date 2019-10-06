@@ -43,6 +43,19 @@ class ClassCounts(
         return highestIndex
     }
 
+    fun allSame(): Int? {
+        var numDifferent = 0
+        var index = -1
+        for ((ndx, i) in counts.withIndex()){
+            if (i > 0){
+                numDifferent++
+                index = ndx
+            };
+            if (numDifferent > 1) return null;
+        }
+        return index;
+    }
+
     fun increment(i: Int) {
         counts[i]++
         sum++
