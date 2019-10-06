@@ -15,11 +15,11 @@ class Tree private constructor(val tree: Node<Int>) {
         data class Split(val bestPurity: Float, val bestThreshold: Float)
 
         fun buildTree(images: Array<LabeledSample>): Tree =
-                Tree(buildNode(images, 3, 0, images.size))
+                Tree(buildNode(images, 3, 0, images.size, 10))
 
 
-        fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int): Node<Int> {
-            val countAll = ClassCounts(10)
+        fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int): Node<Int> {
+            val countAll = ClassCounts(numClasses)
             for (j in low until high) {
                 countAll.increment(images[j].label)
             }
@@ -29,11 +29,7 @@ class Tree private constructor(val tree: Node<Int>) {
             var bestIndex = -1
             var bestThreshold = -1f
 
-
-            val all = ClassCounts(10)
-            for (j in low until high) {
-                all.increment(images[j].label)
-            }
+            val all = countRange(images, low, high, numClasses)
 
             for (i in 0 until images[low].numFeatures) {
                 val best = chooseBestSplit(images, low, high, all, i)
@@ -46,7 +42,10 @@ class Tree private constructor(val tree: Node<Int>) {
             }
             val pi = images.partition(low, high) { i -> i.fv[bestIndex] < bestThreshold}
             println("pi: $pi")
-            return Branch(buildNode(images, maxDepth - 1, low, pi), buildNode(images, maxDepth - 1, pi, high), bestIndex, bestThreshold)
+            return Branch(
+                    buildNode(images, maxDepth - 1, low, pi, numClasses),
+                    buildNode(images, maxDepth - 1, pi, high, numClasses),
+                    bestIndex, bestThreshold)
         }
 
         fun chooseBestSplit(images: Array<LabeledSample>, low: Int, high: Int, all: ClassCounts, i: Int):Split{
@@ -68,6 +67,14 @@ class Tree private constructor(val tree: Node<Int>) {
                 }
             }
             return Split(bestPurity, bestThreshold)
+        }
+
+        fun countRange(images: Array<LabeledSample>, low: Int, high: Int, numClasses: Int): ClassCounts {
+            val all = ClassCounts(numClasses)
+            for (j in low until high) {
+                all.increment(images[j].label)
+            }
+            return all
         }
     }
 }
