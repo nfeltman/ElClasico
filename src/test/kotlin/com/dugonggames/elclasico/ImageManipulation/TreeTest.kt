@@ -41,6 +41,17 @@ internal class TreeTest{
     }
 
     @Test
+    fun `testChooseBestSplit with uneven range unsorted`(){
+        val floats = floatArrayOf(19f, 83f, 97f, 72f, 82f, 15f, 37f, 27f, 10f, 94f)
+        val labels = intArrayOf(1, 0, 0, 0, 1, 1, 1, 0, 0, 0)
+        val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
+        val all = countRange(images, 0, 10, 2)
+        val split = chooseBestSplit(images, 0, 10, all, 0)
+        assertEquals(1.5102041f, split.bestPurity, 0.001f)
+        assertEquals(82.5f, split.bestThreshold)
+    }
+
+    @Test
     fun `test buildNode`(){
         val floats = floatArrayOf(10f, 15f, 19f, 27f, 37f, 72f, 82f, 83f, 94f, 97f)
         val labels = intArrayOf(0, 1, 1, 0, 1, 0, 1, 0, 0, 0)
