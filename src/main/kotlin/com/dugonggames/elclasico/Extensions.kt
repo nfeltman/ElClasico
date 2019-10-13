@@ -12,11 +12,18 @@ fun <T> Array<T>.partition(low: Int, high: Int, p: (T) -> Boolean): Int {
         }
     }
     val temp = this[i + 1]
-    this[i] = this[high - 1]
+    this[i + 1] = this[high - 1]
     this[high - 1] = temp
     return i
 }
-
+/*              ("New Mexico", "Montana", "New York", "Kentucky", "Hawaii", "Minnesota", "Georgia", "Utah",
+                "Wisconsin", "Illinois", "California", "Michigan", "Arizona", "Virginia", "Florida", "Nevada", "Ohio",
+                "Pennsylvania", "North Dakota", "Oregon", "Arkansas", "Wyoming", "Tennessee", "Mississippi",
+                "Rhode Island", "Oklahoma", "Alabama", "Indiana", "Louisiana", "Connecticut", "Texas", "South Carolina",
+                "Alaska", "Washington", "South Dakota", "Maine", "North Carolina", "Maryland", "West Virginia", "Iowa",
+                "Colorado", "New Jersey", "Idaho", "Vermont", "Nebraska", "Delaware", "Kansas", "New Hampshire",
+                "Missouri", "Massachusetts")
+ */
 
 fun testPartition():Boolean {
     val a = arrayOf("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware",
