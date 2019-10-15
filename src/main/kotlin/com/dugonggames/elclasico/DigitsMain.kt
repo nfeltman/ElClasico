@@ -10,19 +10,25 @@ object DigitsMain {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val trainingimagesbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\train-images-idx3-ubyte\\train-images.idx3-ubyte"))
-        val traininglabelsbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\train-labels-idx1-ubyte\\train-labels.idx1-ubyte"))
-        val testimagesbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\t10k-images-idx3-ubyte\\t10k-images.idx3-ubyte"))
-        val testlabelsbytes = Files.readAllBytes(Paths.get("C:\\Users\\alexf\\Downloads\\t10k-labels-idx1-ubyte\\t10k-labels.idx1-ubyte"))
+        val root = System.getProperty("user.home")
+        val rootDataDirectory = Paths.get(root).resolve("Downloads").resolve("dataset")
+        val trainingimagesbytes = rootDataDirectory.resolve("train-images.idx3-ubyte").toFile().readBytes()
+        val traininglabelsbytes = rootDataDirectory.resolve("train-labels.idx1-ubyte").toFile().readBytes()
+        val testimagesbytes = rootDataDirectory.resolve("t10k-images.idx3-ubyte").toFile().readBytes()
+        val testlabelsbytes = rootDataDirectory.resolve("t10k-labels.idx1-ubyte").toFile().readBytes()
 
         val trainingimages = Array(60000){
             i -> val d=DigitImage.fromFile(trainingimagesbytes, 16 + 784 * i, traininglabelsbytes, 8 + i)
                  LabeledSample(FeatureVector(d.digit), d.label)
         }
 
-        val t = Tree.buildTree(trainingimages)
+        //trainingimages.forEach { println(it.fv[387]) }
 
-        val testimages = Array(60000) {
+        val t = Tree.buildTree(trainingimages, 10)
+
+        println("built: $t")
+
+        val testimages = Array(10000) {
             i -> DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
         }
 
@@ -31,10 +37,5 @@ object DigitsMain {
             if (testimages[i].label == t.classify(testimages[i])) correct++
         }
         println(correct)
-
-        val num = 543
-        testimages[num].print()
-        println(t.classify(testimages[num]))
-        println(testimages[num].label)
     }
 }

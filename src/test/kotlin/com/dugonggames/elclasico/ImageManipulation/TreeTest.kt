@@ -5,6 +5,7 @@ import com.dugonggames.elclasico.Classifiers.Tree.Companion.buildNode
 import com.dugonggames.elclasico.Classifiers.Tree.Companion.chooseBestSplit
 import com.dugonggames.elclasico.Classifiers.Tree.Companion.countRange
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
 internal class TreeTest{
@@ -13,9 +14,9 @@ internal class TreeTest{
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(i.toFloat())), i)}
         val all = ClassCounts(10)
         for (i in 0 until 10) all.increment(i)
-        val split = chooseBestSplit(images, 0, 10, all, 0)
-        assertEquals(1.111111f, split.bestPurity, 0.001f)
-        assertEquals(0.5f, split.bestThreshold)
+        val split = chooseBestSplit(images, 0, 10, all, 0)!!
+        assertEquals(1.111111f, split.purity, 0.001f)
+        assertEquals(0.5f, split.threshold)
     }
 
     @Test
@@ -24,9 +25,9 @@ internal class TreeTest{
         val labels = intArrayOf(0, 1, 1, 0, 1, 0, 1, 0, 0, 0)
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 0, 10, 2)
-        val split = chooseBestSplit(images, 0, 10, all, 0)
-        assertEquals(1.5102041f, split.bestPurity, 0.001f)
-        assertEquals(82.5f, split.bestThreshold)
+        val split = chooseBestSplit(images, 0, 10, all, 0)!!
+        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(82.5f, split.threshold)
     }
 
     @Test
@@ -35,9 +36,9 @@ internal class TreeTest{
         val labels = intArrayOf(0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0)
         val images = Array(16){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 3, 13, 2)
-        val split = chooseBestSplit(images, 3, 13, all, 0)
-        assertEquals(1.5102041f, split.bestPurity, 0.001f)
-        assertEquals(82.5f, split.bestThreshold)
+        val split = chooseBestSplit(images, 3, 13, all, 0)!!
+        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(82.5f, split.threshold)
     }
 
     @Test
@@ -46,9 +47,20 @@ internal class TreeTest{
         val labels = intArrayOf(1, 0, 0, 0, 1, 1, 1, 0, 0, 0)
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 0, 10, 2)
-        val split = chooseBestSplit(images, 0, 10, all, 0)
-        assertEquals(1.5102041f, split.bestPurity, 0.001f)
-        assertEquals(82.5f, split.bestThreshold)
+        val split = chooseBestSplit(images, 0, 10, all, 0)!!
+        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(82.5f, split.threshold)
+    }
+
+    @Test
+    fun `testChooseBestSplit with non-unique features`(){
+        val floats = floatArrayOf(0f, 0f, 1f, 1f)
+        val labels = intArrayOf(0, 1, 1, 1)
+        val images = Array(4){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
+        val all = countRange(images, 0, 4, 2)
+        val split = chooseBestSplit(images, 0, 4, all, 0)!!
+        assertEquals(1.5f, split.purity, 0.001f)
+        assertEquals(0.5f, split.threshold)
     }
 
     @Test

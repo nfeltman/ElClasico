@@ -1,10 +1,11 @@
 package com.dugonggames.elclasico
 
+import kotlin.random.Random
+
 class DigitImage constructor(
         val digit: FloatArray,
         val label: Int = 0
 ) {
-
     companion object {
         fun fromFile(bytearr: ByteArray, offset: Int, labels: ByteArray, loffset: Int): DigitImage {
             val pixels = FloatArray(784) {i ->
