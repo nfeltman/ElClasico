@@ -15,8 +15,8 @@ internal class TreeTest{
         val all = ClassCounts(10)
         for (i in 0 until 10) all.increment(i)
         val split = chooseBestSplit(images, 0, 10, all, 0)!!
-        assertEquals(1.111111f, split.purity, 0.001f)
-        assertEquals(0.5f, split.threshold)
+        assertEquals(0.2f, split.purity, 0.001f)
+        assertEquals(2.5f, split.threshold)
     }
 
     @Test
@@ -26,7 +26,7 @@ internal class TreeTest{
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 0, 10, 2)
         val split = chooseBestSplit(images, 0, 10, all, 0)!!
-        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(0.6571428f, split.purity, 0.001f)
         assertEquals(82.5f, split.threshold)
     }
 
@@ -37,7 +37,7 @@ internal class TreeTest{
         val images = Array(16){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 3, 13, 2)
         val split = chooseBestSplit(images, 3, 13, all, 0)!!
-        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(0.6571428f, split.purity, 0.001f)
         assertEquals(82.5f, split.threshold)
     }
 
@@ -48,7 +48,7 @@ internal class TreeTest{
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 0, 10, 2)
         val split = chooseBestSplit(images, 0, 10, all, 0)!!
-        assertEquals(1.5102041f, split.purity, 0.001f)
+        assertEquals(0.6571428f, split.purity, 0.001f)
         assertEquals(82.5f, split.threshold)
     }
 
@@ -59,7 +59,7 @@ internal class TreeTest{
         val images = Array(4){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = countRange(images, 0, 4, 2)
         val split = chooseBestSplit(images, 0, 4, all, 0)!!
-        assertEquals(1.5f, split.purity, 0.001f)
+        assertEquals(0.75f, split.purity, 0.001f)
         assertEquals(0.5f, split.threshold)
     }
 

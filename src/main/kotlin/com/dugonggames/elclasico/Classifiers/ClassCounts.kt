@@ -13,7 +13,7 @@ class ClassCounts(
         return (counts[i] + 0f) / sum
     }
 
-    fun gimiPurity(): Float {
+    fun giniPurity(): Float {
         var sum = 0f
         for (i in counts.indices) {
             sum += propMatching(i) * propMatching(i)

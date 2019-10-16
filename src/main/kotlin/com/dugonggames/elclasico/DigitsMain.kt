@@ -3,6 +3,7 @@ package com.dugonggames.elclasico
 import com.dugonggames.elclasico.Classifiers.FeatureVector
 import com.dugonggames.elclasico.Classifiers.LabeledSample
 import com.dugonggames.elclasico.Classifiers.Tree
+import com.dugonggames.elclasico.ImageManipulation.createLaplacianPyramid
 import java.nio.file.Files
 import java.nio.file.Paths
 
@@ -26,7 +27,7 @@ object DigitsMain {
 
         val t = Tree.buildTree(trainingimages, 10)
 
-        println("built: $t")
+        //println("built: $t")
 
         val testimages = Array(10000) {
             i -> DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)

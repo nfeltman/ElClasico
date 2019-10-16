@@ -15,7 +15,7 @@ data class Tree private constructor(val tree: Node<Int>) {
         data class Split(val purity: Float, val index: Int, val threshold: Float)
 
         fun buildTree(images: Array<LabeledSample>, numClasses: Int): Tree =
-                Tree(buildNode(images, 20, 0, images.size, numClasses))
+                Tree(buildNode(images, 10, 0, images.size, numClasses))
 
 
         fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int): Node<Int> {
@@ -58,9 +58,9 @@ data class Tree private constructor(val tree: Node<Int>) {
                 }
                 val leftOfSplit = images[j-1].fv[i]
                 val rightOfSplit = images[j].fv[i]
-                if (leftOfSplit != rightOfSplit &&
-                        (bestSplit == null || left.gimiPurity() + right.gimiPurity() > bestSplit.purity)) {
-                    bestSplit = Split(left.gimiPurity() + right.gimiPurity(), i, (leftOfSplit + rightOfSplit) * 0.5f)
+                val splitPurity = (left.giniPurity()*left.sum + right.giniPurity()*right.sum) / (left.sum + right.sum)
+                if (leftOfSplit != rightOfSplit && (bestSplit == null || splitPurity > bestSplit.purity)) {
+                    bestSplit = Split(splitPurity, i, (leftOfSplit + rightOfSplit) * 0.5f)
                 }
             }
             // if(bestSplit != null) println("Best split for feature $i is ${bestSplit.threshold} yielding purity of ${bestSplit.purity}")
