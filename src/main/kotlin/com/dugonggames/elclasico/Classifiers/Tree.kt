@@ -6,7 +6,7 @@ import java.util.Comparator
 
 data class Tree private constructor(val tree: Node<Int>) {
 
-    fun classify(image: DigitImage): Int {
+    fun classify(image: FeatureVector): Int {
         return tree.predict(image)
     }
 
@@ -14,9 +14,8 @@ data class Tree private constructor(val tree: Node<Int>) {
 
         data class Split(val purity: Float, val index: Int, val threshold: Float)
 
-        fun buildTree(images: Array<LabeledSample>, numClasses: Int): Tree =
-                Tree(buildNode(images, 10, 0, images.size, numClasses))
-
+        fun buildTree(images: Array<LabeledSample>, numClasses: Int, maxDepth: Int): Tree =
+                Tree(buildNode(images, maxDepth, 0, images.size, numClasses))
 
         fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int): Node<Int> {
             val countAll = countRange(images, low,  high, numClasses)

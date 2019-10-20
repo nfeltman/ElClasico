@@ -7,19 +7,19 @@ data class PyramidLevel(
 )
 
 data class Pyramid(
-        val data: IntArray,
+        val data: FloatArray,
         val levels: List<PyramidLevel>
 ) {
     val numLevels: Int = levels.size
 
     // overrides []
-    operator fun get(level: Int, x: Int, y: Int): Int {
+    operator fun get(level: Int, x: Int, y: Int): Float {
         val l = levels[level]
         return data[l.start+(x*l.height)+y]
     }
 }
 
-fun createGaussianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
+fun createGaussianPyramid(source: FloatArray, w:Int, h:Int): Pyramid {
     var totalSize = 0
     var tempW = w; var tempH = h;
     while (tempW != 1 || tempH != 1){
@@ -28,7 +28,7 @@ fun createGaussianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
         tempH = half(tempH);
     }
     totalSize++ //To account for the final addition of 1*1
-    val out = IntArray(totalSize);
+    val out = FloatArray(totalSize);
     for (i in 0 until source.size) out[i] = source[i]
     var lastlevel = PyramidLevel(0, w, h)
     var levellist = mutableListOf<PyramidLevel>(lastlevel)
@@ -45,7 +45,7 @@ fun createGaussianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
 }
 
 fun createLaplacianPyramid(gaussianPyramid: Pyramid): Pyramid {
-    var data = IntArray(gaussianPyramid.data.size)
+    var data = FloatArray(gaussianPyramid.data.size)
     gaussianPyramid.levels.zipWithNext { a, b ->  for (i in 0 until a.width){
         for (j in 0 until a.height){
             //println("$i, $j, $a, $b, ${b.start+(i/2*b.height)+j/2}")
@@ -57,6 +57,6 @@ fun createLaplacianPyramid(gaussianPyramid: Pyramid): Pyramid {
     return Pyramid(data, gaussianPyramid.levels)
 }
 
-fun createLaplacianPyramid(source: IntArray, w:Int, h:Int): Pyramid {
+fun createLaplacianPyramid(source: FloatArray, w:Int, h:Int): Pyramid {
     return createLaplacianPyramid(createGaussianPyramid(source, w, h))
 }

@@ -40,3 +40,6 @@ fun testPartition():Boolean {
     return p1 == 8 && a.take(p1).toSet() == setOf("Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi",
             "Missouri", "Montana")
 }
+
+
+fun floatArrayOfInts(vararg ints: Int) = FloatArray(ints.size) { ints[it].toFloat() }

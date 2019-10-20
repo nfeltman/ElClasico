@@ -16,7 +16,7 @@ data class DownsampleResults(
 )
 
 //Makes a 1/2 size version of image by averaging each 2*2 square of pixels
-fun downsample(source: IntArray, sourceOffset: Int, w: Int, h: Int, target: IntArray, targetOffset: Int) : DownsampleResults {
+fun downsample(source: FloatArray, sourceOffset: Int, w: Int, h: Int, target: FloatArray, targetOffset: Int) : DownsampleResults {
     val outputW = half(w)
     val outputH = half(h)
     for (i in 0 until outputW) {
@@ -29,24 +29,23 @@ fun downsample(source: IntArray, sourceOffset: Int, w: Int, h: Int, target: IntA
             val y2 = (c2 * h + r2)
             val sum = source[sourceOffset+x1] + source[sourceOffset+x2] + source[sourceOffset+y1] + source[sourceOffset+y2]
             target[targetOffset+(i * outputH + j)] = sum / 4
-            println()
         }
     }
     return DownsampleResults(outputW, outputH, targetOffset + (outputW * outputH))
 }
 
-fun testDownsample(){
-    val source = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
-    //val source = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
-    // (3.5, 5.5, 11.5, 13.5, 0, 0, 0, 0, 0)
-    val target = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-    val results = downsample(source, 0, 5, 5, target, 0)
-    println(target.joinToString())
-}
-
-fun testDownsample2(){
-    val source = intArrayOf(5)
-    val target = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
-    val results = downsample(source, 0, 1, 1, target, 0)
-    println(target.joinToString())
-}
+//fun testDownsample(){
+//    val source = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
+//    //val source = intArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+//    // (3.5, 5.5, 11.5, 13.5, 0, 0, 0, 0, 0)
+//    val target = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+//    val results = downsample(source, 0, 5, 5, target, 0)
+//    println(target.joinToString())
+//}
+//
+//fun testDownsample2(){
+//    val source = intArrayOf(5)
+//    val target = intArrayOf(0, 0, 0, 0, 0, 0, 0, 0, 0)
+//    val results = downsample(source, 0, 1, 1, target, 0)
+//    println(target.joinToString())
+//}

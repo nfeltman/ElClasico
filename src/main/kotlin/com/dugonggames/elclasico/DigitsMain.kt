@@ -3,6 +3,8 @@ package com.dugonggames.elclasico
 import com.dugonggames.elclasico.Classifiers.FeatureVector
 import com.dugonggames.elclasico.Classifiers.LabeledSample
 import com.dugonggames.elclasico.Classifiers.Tree
+import com.dugonggames.elclasico.ImageManipulation.Pyramid
+import com.dugonggames.elclasico.ImageManipulation.createGaussianPyramid
 import com.dugonggames.elclasico.ImageManipulation.createLaplacianPyramid
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -18,14 +20,16 @@ object DigitsMain {
         val testimagesbytes = rootDataDirectory.resolve("t10k-images.idx3-ubyte").toFile().readBytes()
         val testlabelsbytes = rootDataDirectory.resolve("t10k-labels.idx1-ubyte").toFile().readBytes()
 
-        val trainingimages = Array(60000){
-            i -> val d=DigitImage.fromFile(trainingimagesbytes, 16 + 784 * i, traininglabelsbytes, 8 + i)
-                 LabeledSample(FeatureVector(d.digit), d.label)
+        println("Loading images.")
+        val trainingimages = Array(60000){ i ->
+            val d=DigitImage.fromFile(trainingimagesbytes, 16 + 784 * i, traininglabelsbytes, 8 + i)
+            LabeledSample(preprocessImage(d), d.label)
         }
+        println("Done loading.")
 
         //trainingimages.forEach { println(it.fv[387]) }
 
-        val t = Tree.buildTree(trainingimages, 10)
+        val t = Tree.buildTree(images = trainingimages, numClasses = 10, maxDepth = 5)
 
         //println("built: $t")
 
@@ -33,10 +37,13 @@ object DigitsMain {
             i -> DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
         }
 
-        var correct = 0
-        for (i in 0..9999) {
-            if (testimages[i].label == t.classify(testimages[i])) correct++
-        }
+        val correct = testimages.count { it.label == t.classify(preprocessImage(it)) }
         println(correct)
+    }
+
+    fun preprocessImage(digitImage: DigitImage): FeatureVector {
+        return FeatureVector(digitImage.digit)
+        //return FeatureVector(createGaussianPyramid(digitImage.digit, 28, 28).data)
+        //return FeatureVector(createLaplacianPyramid(digitImage.digit, 28, 28).data)
     }
 }
