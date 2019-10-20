@@ -1,12 +1,11 @@
 package com.dugonggames.elclasico
 
+import com.dugonggames.elclasico.Classifiers.BuildTree.buildTree
 import com.dugonggames.elclasico.Classifiers.FeatureVector
 import com.dugonggames.elclasico.Classifiers.LabeledSample
-import com.dugonggames.elclasico.Classifiers.Tree
 import com.dugonggames.elclasico.ImageManipulation.Pyramid
 import com.dugonggames.elclasico.ImageManipulation.createGaussianPyramid
 import com.dugonggames.elclasico.ImageManipulation.createLaplacianPyramid
-import java.nio.file.Files
 import java.nio.file.Paths
 
 object DigitsMain {
@@ -29,7 +28,7 @@ object DigitsMain {
 
         //trainingimages.forEach { println(it.fv[387]) }
 
-        val t = Tree.buildTree(images = trainingimages, numClasses = 10, maxDepth = 5)
+        val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 2)
 
         //println("built: $t")
 
