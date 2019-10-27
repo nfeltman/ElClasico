@@ -1,5 +1,6 @@
 package com.dugonggames.elclasico
 
+import com.dugonggames.elclasico.Classifiers.BuildTree.buildForest
 import com.dugonggames.elclasico.Classifiers.BuildTree.buildTree
 import com.dugonggames.elclasico.Classifiers.FeatureVector
 import com.dugonggames.elclasico.Classifiers.LabeledSample
@@ -28,15 +29,15 @@ object DigitsMain {
 
         //trainingimages.forEach { println(it.fv[387]) }
 
-        val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 2)
+        //val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 1)
 
-        //println("built: $t")
+        val f = buildForest(20, trainingimages, 10, 6, 28, 20)
 
         val testimages = Array(10000) {
             i -> DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
         }
 
-        val correct = testimages.count { it.label == t.classify(preprocessImage(it)) }
+        val correct = testimages.count { it.label == f.classify(preprocessImage(it)) }
         println(correct)
     }
 

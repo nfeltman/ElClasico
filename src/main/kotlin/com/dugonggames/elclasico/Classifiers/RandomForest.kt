@@ -8,6 +8,4 @@ class RandomForest(val trees: List<Tree>) {
         }
         return cc.highestValue()
     }
-
-
 }

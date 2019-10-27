@@ -3,6 +3,8 @@ package com.dugonggames.elclasico.ImageManipulation
 import com.dugonggames.elclasico.Classifiers.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
+import kotlin.random.asKotlinRandom
 
 internal class TreeTest{
     @Test
@@ -66,7 +68,7 @@ internal class TreeTest{
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
         val all = ClassCounts(10)
         for (i in 0 until 10) all.increment(i)
-        val shallowTree = BuildTree.buildNode(images, 2, 0, 10, 2)
+        val shallowTree = BuildTree.buildNode(images, 2, 0, 10, 2, 1, Random(1))
 
         val correctTree = Branch(Leaf(1), Leaf(0), 0, 82.5f)
         assertEquals(shallowTree, correctTree)
@@ -77,12 +79,20 @@ internal class TreeTest{
         val floats = floatArrayOf(10f, 15f, 19f, 27f, 37f, 72f, 82f, 83f, 94f, 97f)
         val labels = intArrayOf(0, 1, 1, 0, 1, 0, 1, 0, 0, 0)
         val images = Array(10){i -> LabeledSample(FeatureVector(floatArrayOf(floats[i])), labels[i])}
-        val tree = BuildTree.buildNode(images, 3, 0, 10, 2)
+        val tree = BuildTree.buildNode(images, 3, 0, 10, 2, 1, Random(1))
 
         val correctTree = Branch(Leaf(1), Leaf(0), 0, 82.5f)
         val correctLeft = Branch(Leaf(0), Leaf(1), 0, 12.5f)
         val correctRight = Leaf(0)
         assertEquals(correctLeft, (tree as Branch).l)
         assertEquals(correctRight, (tree as Branch).r)
+    }
+
+    @Test
+    fun `test randFeature`(){
+        val seed = 1
+        val rand = Random(1)
+        assertEquals(List(1){5}, rand.randFeature(10, 1))
+        assertEquals(listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9), rand.randFeature(10, 10))
     }
 }

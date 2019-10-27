@@ -2,15 +2,24 @@ package com.dugonggames.elclasico.Classifiers
 
 import com.dugonggames.elclasico.partition
 import java.util.*
+import kotlin.Comparator
+import kotlin.math.max
+import kotlin.random.Random
 
 object BuildTree{
 
     data class Split(val purity: Float, val index: Int, val threshold: Float)
 
-    fun buildTree(images: Array<LabeledSample>, numClasses: Int, maxDepth: Int, numFeatures: Int=images[0].numFeatures): Tree =
-            Tree(buildNode(images, maxDepth, 0, images.size, numClasses))
+    fun buildTree(images: Array<LabeledSample>, numClasses: Int, maxDepth: Int, numFeatures: Int=images[0].numFeatures, rand: Random=Random(1)): Tree =
+            Tree(buildNode(images, maxDepth, 0, images.size, numClasses, numFeatures, rand))
 
-    fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int, numFeatures: Int): Node<Int> {
+    fun buildForest(seed: Int=20, images: Array<LabeledSample>, numClasses: Int, maxDepth: Int, numFeatures: Int, numTrees: Int=20): RandomForest{
+        val rand = Random(seed)
+        val forest = List(numTrees){buildTree(images, numClasses, maxDepth, numFeatures, rand)}
+        return RandomForest(forest)
+    }
+
+    fun buildNode(images: Array<LabeledSample>, maxDepth: Int, low: Int, high: Int, numClasses: Int, numFeatures: Int, rand: Random): Node<Int> {
         val countAll = countRange(images, low, high, numClasses)
         if (maxDepth <= 1) return Leaf(countAll.highestValue())
         val index = countAll.allSame()
@@ -20,7 +29,7 @@ object BuildTree{
 
         val all = countRange(images, low, high, numClasses)
 
-        for (i in 0 until images[low].numFeatures) {
+        for (i in rand.randFeature(images[low].numFeatures, numFeatures)) {
             val featureSplit = chooseBestSplit(images, low, high, all, i)
             if (bestSplit == null || featureSplit != null && featureSplit.purity > bestSplit.purity){
                 bestSplit = featureSplit
@@ -33,8 +42,8 @@ object BuildTree{
         val pi = images.partition(low, high) { i -> i.fv[bestSplit.index] < bestSplit.threshold}
         println("Selected threshold of ${bestSplit.threshold} on feature ${bestSplit.index}, yielding partition value: $pi")
         return Branch(
-                buildNode(images, maxDepth - 1, low, pi, numClasses),
-                buildNode(images, maxDepth - 1, pi, high, numClasses),
+                buildNode(images, maxDepth - 1, low, pi, numClasses, numFeatures, rand),
+                buildNode(images, maxDepth - 1, pi, high, numClasses, numFeatures, rand),
                 bestSplit.index, bestSplit.threshold)
     }
 
@@ -66,13 +75,14 @@ object BuildTree{
         }
         return all
     }
-
-    fun randFeature(max: Int, n: Int): List<Int>{
-        var features = (0..max).toMutableList()
-        var result = List<Int>(n){i ->
-            val rand = (Math.random()*features.size).toInt()
-            features.removeAt(rand)
-        }
-        return result
-    }
 }
+
+fun Random.randFeature(max: Int, n: Int): List<Int>{
+    var features = (0 until max).toMutableList()
+    var result = List<Int>(n){i ->
+        val rand = nextInt(features.size)
+        features.removeAt(rand)
+    }
+    return result.sorted()
+}
+
