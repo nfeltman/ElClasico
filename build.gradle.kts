@@ -9,6 +9,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2")
 
     // JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
