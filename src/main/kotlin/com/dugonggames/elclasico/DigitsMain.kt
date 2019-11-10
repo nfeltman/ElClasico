@@ -28,18 +28,18 @@ object DigitsMain {
         println("Done loading.")
 
         //trainingimages.forEach { println(it.fv[387]) }
-        for (i in 2..15) {
-            val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 13)
+        //val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 13)
 
-            //val f = buildForest(20, trainingimages, 10, i, 28, 20)
+        val time = System.currentTimeMillis()
+        val f = buildForest(20, trainingimages, 10, 5, 28, 8)
+        println("Milliseconds: " + (System.currentTimeMillis()-time))
 
-            val testimages = Array(10000) { i ->
-                DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
-            }
-
-            val correct = testimages.count { it.label == t.classify(preprocessImage(it)) }
-            println("$i: $correct")
+        val testimages = Array(10000) { i ->
+            DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
         }
+
+        val correct = testimages.count { it.label == f.classify(preprocessImage(it)) }
+        println("$correct")
     }
 
     fun preprocessImage(digitImage: DigitImage): FeatureVector {

@@ -1,6 +1,7 @@
 package com.dugonggames.elclasico.Classifiers
 
 import com.dugonggames.elclasico.partition
+import kotlinx.coroutines.*
 import java.util.*
 import kotlin.Comparator
 import kotlin.math.max
@@ -14,8 +15,9 @@ object BuildTree{
             Tree(buildNode(images, maxDepth, 0, images.size, numClasses, numFeatures, rand))
 
     fun buildForest(seed: Int=20, images: Array<LabeledSample>, numClasses: Int, maxDepth: Int, numFeatures: Int, numTrees: Int=20): RandomForest{
-        val rand = Random(seed)
-        val forest = List(numTrees){buildTree(images, numClasses, maxDepth, numFeatures, rand)}
+        val forest = runBlocking(Dispatchers.Default){
+            List(numTrees){async{buildTree(images.copyOf(), numClasses, maxDepth, numFeatures, Random(seed+it))}}.awaitAll()
+        }
         return RandomForest(forest)
     }
 
