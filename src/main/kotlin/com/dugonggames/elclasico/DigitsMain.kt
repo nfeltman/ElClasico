@@ -21,24 +21,25 @@ object DigitsMain {
         val testlabelsbytes = rootDataDirectory.resolve("t10k-labels.idx1-ubyte").toFile().readBytes()
 
         println("Loading images.")
-        val trainingimages = Array(60000){ i ->
-            val d=DigitImage.fromFile(trainingimagesbytes, 16 + 784 * i, traininglabelsbytes, 8 + i)
+        val trainingimages = Array(60000) { i ->
+            val d = DigitImage.fromFile(trainingimagesbytes, 16 + 784 * i, traininglabelsbytes, 8 + i)
             LabeledSample(preprocessImage(d), d.label)
         }
         println("Done loading.")
 
         //trainingimages.forEach { println(it.fv[387]) }
+        for (i in 2..15) {
+            val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 13)
 
-        //val t = buildTree(images = trainingimages, numClasses = 10, maxDepth = 1)
+            //val f = buildForest(20, trainingimages, 10, i, 28, 20)
 
-        val f = buildForest(20, trainingimages, 10, 6, 28, 20)
+            val testimages = Array(10000) { i ->
+                DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
+            }
 
-        val testimages = Array(10000) {
-            i -> DigitImage.fromFile(testimagesbytes, 16 + 784 * i, testlabelsbytes, 8 + i)
+            val correct = testimages.count { it.label == t.classify(preprocessImage(it)) }
+            println("$i: $correct")
         }
-
-        val correct = testimages.count { it.label == f.classify(preprocessImage(it)) }
-        println(correct)
     }
 
     fun preprocessImage(digitImage: DigitImage): FeatureVector {

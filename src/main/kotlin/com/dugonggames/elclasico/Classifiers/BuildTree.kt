@@ -34,13 +34,13 @@ object BuildTree{
             if (bestSplit == null || featureSplit != null && featureSplit.purity > bestSplit.purity){
                 bestSplit = featureSplit
             }
-            if (i % 100 == 0 && i > 0) println(i)
+            //if (i % 100 == 0 && i > 0) println(i)
         }
 
         if(bestSplit == null) return Leaf(countAll.highestValue())
 
         val pi = images.partition(low, high) { i -> i.fv[bestSplit.index] < bestSplit.threshold}
-        println("Selected threshold of ${bestSplit.threshold} on feature ${bestSplit.index}, yielding partition value: $pi")
+        //println("Selected threshold of ${bestSplit.threshold} on feature ${bestSplit.index}, yielding partition value: $pi")
         return Branch(
                 buildNode(images, maxDepth - 1, low, pi, numClasses, numFeatures, rand),
                 buildNode(images, maxDepth - 1, pi, high, numClasses, numFeatures, rand),

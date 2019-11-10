@@ -11,9 +11,9 @@ fun <T> Array<T>.partition(low: Int, high: Int, p: (T) -> Boolean): Int {
             i++
         }
     }
-    val temp = this[i + 1]
-    this[i + 1] = this[high - 1]
-    this[high - 1] = temp
+    //val temp = this[i + 1]
+    //this[i + 1] = this[high - 1]
+    //this[high - 1] = temp
     return i
 }
 /*              ("New Mexico", "Montana", "New York", "Kentucky", "Hawaii", "Minnesota", "Georgia", "Utah",
